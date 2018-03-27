@@ -7,9 +7,9 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/eure/kamimai"
-	"github.com/eure/kamimai/core"
-	_ "github.com/eure/kamimai/driver"
+	"github.com/om732/kamimai"
+	"github.com/om732/kamimai/core"
+	_ "github.com/om732/kamimai/driver"
 )
 
 var (
@@ -18,6 +18,7 @@ var (
 		upCmd,
 		downCmd,
 		syncCmd,
+		statusCmd,
 		// migrateCmd,
 	}
 

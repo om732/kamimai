@@ -9,9 +9,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/eure/kamimai/internal/cast"
-	"github.com/eure/kamimai/internal/direction"
-	"github.com/eure/kamimai/internal/version"
+	"github.com/olekukonko/tablewriter"
+	"github.com/om732/kamimai/internal/cast"
+	"github.com/om732/kamimai/internal/direction"
+	"github.com/om732/kamimai/internal/version"
 )
 
 const (
@@ -282,4 +283,41 @@ func (s *Service) NextMigration(name string) (up *Migration, down *Migration, er
 	down.name = filepath.Join(s.config.migrationsDir(), n)
 
 	return
+}
+
+// MigrationStatus status
+func (s *Service) MigrationStatus() error {
+	var fileVersions []string
+	s.apply()
+
+	for _, obj := range s.data {
+		_, file := filepath.Split(obj.name)
+		fileVersions = append([]string{version.Get(file)}, fileVersions...)
+	}
+
+	migVersions, err := s.driver.Version().Versions()
+	if err != nil {
+		return err
+	}
+
+	if len(fileVersions) == 0 {
+		log.Print("Not applyed")
+	} else {
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"Version", "State"})
+		for _, v := range fileVersions {
+			fv := cast.Uint64(v)
+			status := "Pending"
+			for _, mv := range migVersions {
+				if fv == mv {
+					status = "Applyed"
+					break
+				}
+			}
+			table.Append([]string{v, status})
+		}
+		table.Render()
+	}
+
+	return nil
 }

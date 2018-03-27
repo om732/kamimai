@@ -3,7 +3,7 @@ package main
 import (
 	"strconv"
 
-	"github.com/eure/kamimai/internal/cast"
+	"github.com/om732/kamimai/internal/cast"
 )
 
 var (

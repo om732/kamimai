@@ -1,6 +1,6 @@
 package main
 
-import "github.com/eure/kamimai"
+import "github.com/om732/kamimai"
 
 var (
 	syncCmd = &Cmd{

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/eure/kamimai/core"
 	"github.com/go-sql-driver/mysql"
+	"github.com/om732/kamimai/core"
 )
 
 type (
@@ -184,6 +184,27 @@ func (d *MySQL) Current() (uint64, error) {
 		return 0, err
 	}
 	return version, nil
+}
+
+// Versions return migration history
+func (d *MySQL) Versions() ([]uint64, error) {
+	const query = `SELECT version FROM ` +
+		versionTableName + ` ORDER BY version DESC`
+
+	var versions []uint64
+	rows, err := d.db.Query(query)
+	switch {
+	case err == sql.ErrNoRows:
+		return append(versions, 0), nil
+	case err != nil:
+		return append(versions, 0), nil
+	}
+	for rows.Next() {
+		var version uint64
+		rows.Scan(&version)
+		versions = append(versions, version)
+	}
+	return versions, nil
 }
 
 // Create creates
