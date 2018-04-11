@@ -12,7 +12,7 @@ A migration manager written in Golang. Use it in run commands via the CLI.
 `kamimai` is written in Go, so if you have Go installed you can install it with go get:
 
 ```shell
-go get github.com/eure/kamimai/cmd/kamimai
+go get github.com/om732/kamimai/cmd/kamimai
 ```
 
 Make sure that `kamimai` was installed correctly:
@@ -63,7 +63,20 @@ kamimai -path=./example/mysql -env=test1 down -version=20060102150405
 kamimai -path=./example/mysql -env=test1 sync
 ```
 
-## Usage in Go code 
+### Status
+
+```shell
+# show migration history
+kamimai -path=./example/mysql -env=test1 status
++---------+---------+
+| VERSION |  STATE  |
++---------+---------+
+|     002 | Pending |
+|     001 | Applyed |
++---------+---------+
+```
+
+## Usage in Go code
 
 ```go
 package main
@@ -79,9 +92,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	conf.WithEnv("development")
-	
+
 	// Sync
 	kamimai.Sync(conf)
 

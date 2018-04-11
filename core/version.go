@@ -15,6 +15,9 @@ type (
 		// Current returns the current migration version.
 		Current() (uint64, error)
 
+		// History returns the migration history.
+		Versions() ([]uint64, error)
+
 		// Create creates
 		Create() error
 
