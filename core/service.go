@@ -3,7 +3,6 @@ package core
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -131,7 +130,7 @@ func (s *Service) do(idx int) error {
 		}
 	}
 
-	log.Println("applied", mig.Name())
+	fmt.Println("applied", mig.Name())
 
 	return nil
 }
@@ -301,7 +300,7 @@ func (s *Service) MigrationStatus() error {
 	}
 
 	if len(fileVersions) == 0 {
-		log.Print("Not applyed")
+		fmt.Print("Not applied")
 	} else {
 		table := tablewriter.NewWriter(os.Stdout)
 		table.SetHeader([]string{"Version", "State"})
@@ -310,7 +309,7 @@ func (s *Service) MigrationStatus() error {
 			status := "Pending"
 			for _, mv := range migVersions {
 				if fv == mv {
-					status = "Applyed"
+					status = "Applied"
 					break
 				}
 			}
